@@ -130,3 +130,14 @@ for (nome in names(variaveis)) {
 
   cat("\n\n")
 }
+
+# %% 
+# 4 - Contagem de valores ausentes de cada coluna
+library("summarytools")
+colunas <- c("Gender", "Race1", "MaritalStatus", "SexOrientation")
+
+for (nome in names(colunas)){ #for loop igual ao python
+  cat("======= ", nome, " =========\n")
+  print(freq(as.factor(categoric[[nome]]))) #autoprint - tem que explicitar o print # nolint
+  cat("\n\n")
+}
