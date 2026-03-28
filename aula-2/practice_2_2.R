@@ -89,3 +89,44 @@ cat("======= Quartis e Interquartis ======\n",
     "Altura Q3 - Q1: ", IQR(df_subset$Height, na.rm = TRUE), "\n",
     "IMC Q3 - Q1: ", IQR(df_subset$BMI, na.rm = TRUE), "\n\n"
 )
+
+# %%
+# ================================
+# 3 - Selecionar variáveis categóricas e realizar a frequência absoluta e relativa 
+categoric <- dados[, c("Gender", "Race1", "MaritalStatus", "SexOrientation")]
+
+# trecho feito com I.A para melhor apresentação e aprendizado
+variaveis <- list(
+  "Gênero"           = categoric$Gender,
+  "Raça"             = categoric$Race1,
+  "Estado Civil"     = categoric$MaritalStatus,
+  "Orientação Sexual"= categoric$SexOrientation
+)
+
+
+for (nome in names(variaveis)) {
+  fa <- table(variaveis[[nome]]) # contagem de frequências ABSOLUTAS
+  fr <- prop.table(fa) # divide a absoluta pelo total - RELATIVA
+
+  largura <- nchar(nome) + 6
+  borda   <- paste(rep("-", max(largura, 52)), collapse = "") # similar a ".\n".join do python # nolint
+
+  cat(paste0(" # ", borda, " #\n")) #igual ao anterior, só que msem separador
+  cat(paste0(" # Tabela de Frequências — ", nome, " #\n"))
+  cat(paste0(" # ", borda, " #\n\n"))
+
+  cat(
+    paste(
+      "",
+      capture.output( # captura o que seria impresso e retorna como vetor de strings # nolint
+        cbind(
+          "Frequência Absoluta"   = as.integer(fa),
+          "Frequência Relativa (%)" = round(100 * fr, 2)
+        ) |> `rownames<-`(names(fa))
+      ),
+      collapse = "\n"
+    )
+  )
+
+  cat("\n\n")
+}
