@@ -63,3 +63,29 @@ cat("======= Minimo e Máximo ======\n",
     "Altura mínima: ", min(df_subset$Weight, na.rm = TRUE), " e máxima: ", max(df_subset$Weight, na.rm = TRUE), "\n", # nolint
     "IMC mínima: ", min(df_subset$BMI, na.rm = TRUE), " e máxima: ", max(df_subset$BMI, na.rm = TRUE), "\n" # nolint
 )
+
+# %% 
+# ================================
+# 2 - Encontrar os quartis e interquartis 
+
+cat("======= Quartis e Interquartis ======\n",
+    "Idade Q1: ", quantile(df_subset$Age, probs = 0.25), "\n",
+    "Peso Q1: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+    "Altura Q1: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+    "IMC Q1: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+
+    "Idade Q2: ", quantile(df_subset$Age, probs = 0.25), "\n",
+    "Peso Q2: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+    "Altura Q2: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+    "IMC Q2: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+
+    "Idade Q3: ", quantile(df_subset$Age, probs = 0.25), "\n",
+    "Peso Q3: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+    "Altura Q3: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+    "IMC Q3: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+
+    "Idade Q3 - Q1: ", IQR(df_subset$Age), "\n",
+    "Peso Q3 - Q1: ", IQR(df_subset$Weight, na.rm = TRUE), "\n",
+    "Altura Q3 - Q1: ", IQR(df_subset$Height, na.rm = TRUE), "\n",
+    "IMC Q3 - Q1: ", IQR(df_subset$BMI, na.rm = TRUE), "\n\n"
+)
