@@ -18,89 +18,92 @@ library(tidyverse)
 glimpse(df_subset)
 
 # %%
-# tendência central 
+# tendência central
 # o sapply é parecidissimo com o map() do py
 media <- sapply(df_subset, mean, na.rm = TRUE) # média
-cat("======= Média ======\n",
-    "Idade: ", media["Age"], "\n", # nolint
-    "Peso: ", media["Weight"], "\n",
-    "Altura: ", media["Height"], "\n",
-    "IMC: ", media["BMI"], "\n"
+cat(
+  "======= Média ======\n",
+  "Idade: ", media["Age"], "\n", # nolint
+  "Peso: ", media["Weight"], "\n",
+  "Altura: ", media["Height"], "\n",
+  "IMC: ", media["BMI"], "\n"
 )
 mediana <- sapply(df_subset, median, na.rm = TRUE) # mediana
-cat("======= Mediana ======\n",
-    "Idade: ", mediana["Age"], "\n", # nolint
-    "Peso: ", mediana["Weight"], "\n",
-    "Altura: ", mediana["Height"], "\n",
-    "IMC: ", mediana["BMI"], "\n"
+cat(
+  "======= Mediana ======\n",
+  "Idade: ", mediana["Age"], "\n", # nolint
+  "Peso: ", mediana["Weight"], "\n",
+  "Altura: ", mediana["Height"], "\n",
+  "IMC: ", mediana["BMI"], "\n"
 )
 
 # medidas de dispersão
 variancia <- sapply(df_subset, var, na.rm = TRUE) # VARIANCIA
-cat("======= Variância ======\n",
-    "Idade: ", variancia["Age"], "\n", # nolint
-    "Peso: ", variancia["Weight"], "\n",
-    "Altura: ", variancia["Height"], "\n",
-    "IMC: ", variancia["BMI"], "\n"
+cat(
+  "======= Variância ======\n",
+  "Idade: ", variancia["Age"], "\n", # nolint
+  "Peso: ", variancia["Weight"], "\n",
+  "Altura: ", variancia["Height"], "\n",
+  "IMC: ", variancia["BMI"], "\n"
 )
 
 desvio_padrao <- sapply(
   X = df_subset, # vetor
   FUN = sd, # função a ser aplicado
   na.rm = TRUE
-) #desvio standar
-cat("======= desvio_padrao ======\n",
-    "Idade: ", desvio_padrao["Age"], "\n", # nolint
-    "Peso: ", desvio_padrao["Weight"], "\n",
-    "Altura: ", desvio_padrao["Height"], "\n",
-    "IMC: ", desvio_padrao["BMI"], "\n"
+) # desvio standar
+cat(
+  "======= desvio_padrao ======\n",
+  "Idade: ", desvio_padrao["Age"], "\n", # nolint
+  "Peso: ", desvio_padrao["Weight"], "\n",
+  "Altura: ", desvio_padrao["Height"], "\n",
+  "IMC: ", desvio_padrao["BMI"], "\n"
 )
 
 # minimo, máximo e intervalos
-cat("======= Minimo e Máximo ======\n",
-    "Idade mínima: ", min(df_subset$Age), " e máxima: ", max(df_subset$Age), "\n", # nolint
-    "Peso mínima: ", min(df_subset$Height, na.rm = TRUE), " e máxima: ", max(df_subset$Height, na.rm = TRUE), "\n", # nolint
-    "Altura mínima: ", min(df_subset$Weight, na.rm = TRUE), " e máxima: ", max(df_subset$Weight, na.rm = TRUE), "\n", # nolint
-    "IMC mínima: ", min(df_subset$BMI, na.rm = TRUE), " e máxima: ", max(df_subset$BMI, na.rm = TRUE), "\n" # nolint
-)
-
-# %% 
-# ================================
-# 2 - Encontrar os quartis e interquartis 
-
-cat("======= Quartis e Interquartis ======\n",
-    "Idade Q1: ", quantile(df_subset$Age, probs = 0.25), "\n",
-    "Peso Q1: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
-    "Altura Q1: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
-    "IMC Q1: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
-
-    "Idade Q2: ", quantile(df_subset$Age, probs = 0.25), "\n",
-    "Peso Q2: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
-    "Altura Q2: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
-    "IMC Q2: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
-
-    "Idade Q3: ", quantile(df_subset$Age, probs = 0.25), "\n",
-    "Peso Q3: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
-    "Altura Q3: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
-    "IMC Q3: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
-
-    "Idade Q3 - Q1: ", IQR(df_subset$Age), "\n",
-    "Peso Q3 - Q1: ", IQR(df_subset$Weight, na.rm = TRUE), "\n",
-    "Altura Q3 - Q1: ", IQR(df_subset$Height, na.rm = TRUE), "\n",
-    "IMC Q3 - Q1: ", IQR(df_subset$BMI, na.rm = TRUE), "\n\n"
+cat(
+  "======= Minimo e Máximo ======\n",
+  "Idade mínima: ", min(df_subset$Age), " e máxima: ", max(df_subset$Age), "\n", # nolint
+  "Peso mínima: ", min(df_subset$Height, na.rm = TRUE), " e máxima: ", max(df_subset$Height, na.rm = TRUE), "\n", # nolint
+  "Altura mínima: ", min(df_subset$Weight, na.rm = TRUE), " e máxima: ", max(df_subset$Weight, na.rm = TRUE), "\n", # nolint
+  "IMC mínima: ", min(df_subset$BMI, na.rm = TRUE), " e máxima: ", max(df_subset$BMI, na.rm = TRUE), "\n" # nolint
 )
 
 # %%
 # ================================
-# 3 - Selecionar variáveis categóricas e realizar a frequência absoluta e relativa 
+# 2 - Encontrar os quartis e interquartis
+
+cat(
+  "======= Quartis e Interquartis ======\n",
+  "Idade Q1: ", quantile(df_subset$Age, probs = 0.25), "\n",
+  "Peso Q1: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+  "Altura Q1: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+  "IMC Q1: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+  "Idade Q2: ", quantile(df_subset$Age, probs = 0.25), "\n",
+  "Peso Q2: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+  "Altura Q2: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+  "IMC Q2: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+  "Idade Q3: ", quantile(df_subset$Age, probs = 0.25), "\n",
+  "Peso Q3: ", quantile(df_subset$Weight, probs = 0.25, na.rm = TRUE), "\n",
+  "Altura Q3: ", quantile(df_subset$Height, probs = 0.25, na.rm = TRUE), "\n",
+  "IMC Q3: ", quantile(df_subset$BMI, probs = 0.25, na.rm = TRUE), "\n\n",
+  "Idade Q3 - Q1: ", IQR(df_subset$Age), "\n",
+  "Peso Q3 - Q1: ", IQR(df_subset$Weight, na.rm = TRUE), "\n",
+  "Altura Q3 - Q1: ", IQR(df_subset$Height, na.rm = TRUE), "\n",
+  "IMC Q3 - Q1: ", IQR(df_subset$BMI, na.rm = TRUE), "\n\n"
+)
+
+# %%
+# ================================
+# 3 - Selecionar variáveis categóricas e realizar a frequência absoluta e relativa
 categoric <- dados[, c("Gender", "Race1", "MaritalStatus", "SexOrientation")]
 
 # trecho feito com I.A para melhor apresentação e aprendizado
 variaveis <- list(
-  "Gênero"           = categoric$Gender,
-  "Raça"             = categoric$Race1,
-  "Estado Civil"     = categoric$MaritalStatus,
-  "Orientação Sexual"= categoric$SexOrientation
+  "Gênero" = categoric$Gender,
+  "Raça" = categoric$Race1,
+  "Estado Civil" = categoric$MaritalStatus,
+  "Orientação Sexual" = categoric$SexOrientation
 )
 
 
@@ -109,9 +112,9 @@ for (nome in names(variaveis)) {
   fr <- prop.table(fa) # divide a absoluta pelo total - RELATIVA
 
   largura <- nchar(nome) + 6
-  borda   <- paste(rep("-", max(largura, 52)), collapse = "") # similar a ".\n".join do python # nolint
+  borda <- paste(rep("-", max(largura, 52)), collapse = "") # similar a ".\n".join do python # nolint
 
-  cat(paste0(" # ", borda, " #\n")) #igual ao anterior, só que msem separador
+  cat(paste0(" # ", borda, " #\n")) # igual ao anterior, só que msem separador
   cat(paste0(" # Tabela de Frequências — ", nome, " #\n"))
   cat(paste0(" # ", borda, " #\n\n"))
 
@@ -120,7 +123,7 @@ for (nome in names(variaveis)) {
       "",
       capture.output( # captura o que seria impresso e retorna como vetor de strings # nolint
         cbind(
-          "Frequência Absoluta"   = as.integer(fa),
+          "Frequência Absoluta" = as.integer(fa),
           "Frequência Relativa (%)" = round(100 * fr, 2)
         ) |> `rownames<-`(names(fa))
       ),
@@ -131,13 +134,35 @@ for (nome in names(variaveis)) {
   cat("\n\n")
 }
 
-# %% 
+# %%
+# ========================
 # 4 - Contagem de valores ausentes de cada coluna
 library("summarytools")
 colunas <- c("Gender", "Race1", "MaritalStatus", "SexOrientation")
 
-for (nome in names(colunas)){ #for loop igual ao python
+for (nome in names(colunas)) { # for loop igual ao python
   cat("======= ", nome, " =========\n")
-  print(freq(as.factor(categoric[[nome]]))) #autoprint - tem que explicitar o print # nolint
+  print(freq(as.factor(categoric[[nome]]))) # autoprint - tem que explicitar o print # nolint
   cat("\n\n")
 }
+
+# %%
+# ========================
+# 5 - Fazer uma sumarização estratificada
+library(dplyr)
+colunas_sel <- dados |>
+  select(Gender, Age, Height, Weight)
+
+head(colunas_sel, n = 10)
+
+# USO DE I.A para estudo
+genero_sel <- dados |>
+  group_by(Gender) |>
+  summarise(
+    Media_Idade  = mean(Age,    na.rm = TRUE),
+    Media_Altura = mean(Height, na.rm = TRUE),
+    Media_Peso   = mean(Weight, na.rm = TRUE),
+    .groups = "drop"  # boa prática: remove o agrupamento após resumir
+  )
+
+print(genero_sel)
