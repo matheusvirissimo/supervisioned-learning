@@ -166,3 +166,15 @@ genero_sel <- dados |>
   )
 
 print(genero_sel)
+
+# %%
+# ========================
+# 6 - criação de tabelas de contingência
+conting <- dados |>
+  select(Gender, Diabetes)
+
+tab_conting <- table(conting)
+prop.table(
+  x = tab_conting, 
+  margin = 1 # conta as proporções por: 1 é linha / 2 é coluna
+)
