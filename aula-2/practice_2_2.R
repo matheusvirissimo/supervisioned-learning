@@ -12,7 +12,7 @@ names(dados)
 colnames(dados)
 # selecionarei Age, Weight, Height, BMI
 df_subset <- dados[, c("Age", "Weight", "Height", "BMI")]
-teste <- c("Age", "Weight", "Height", "BMI")
+colunas_recortadas <- c("Age", "Weight", "Height", "BMI")
 
 library(tidyverse)
 glimpse(df_subset)
@@ -159,10 +159,10 @@ head(colunas_sel, n = 10)
 genero_sel <- dados |>
   group_by(Gender) |>
   summarise(
-    Media_Idade  = mean(Age,    na.rm = TRUE),
+    Media_Idade = mean(Age, na.rm = TRUE),
     Media_Altura = mean(Height, na.rm = TRUE),
-    Media_Peso   = mean(Weight, na.rm = TRUE),
-    .groups = "drop"  # boa prática: remove o agrupamento após resumir
+    Media_Peso = mean(Weight, na.rm = TRUE),
+    .groups = "drop" # boa prática: remove o agrupamento após resumir
   )
 
 print(genero_sel)
@@ -175,6 +175,39 @@ conting <- dados |>
 
 tab_conting <- table(conting)
 prop.table(
-  x = tab_conting, 
+  x = tab_conting,
   margin = 1 # conta as proporções por: 1 é linha / 2 é coluna
 )
+
+# %%
+# ========================
+# 7 - Criação de novas variáveis e sumarização exploratória
+novo_df <- dados |>
+  select(all_of(colunas_recortadas)) |>
+    mutate(
+      AgeGroup = case_when(
+        Age < 18 ~ "menor de idade",
+        Age >= 18 & Age < 60 ~ "adulto",
+        Age >= 60 ~ "idoso",
+        TRUE ~ NA_character_
+      ),
+      Size = case_when(
+        Height > 170 ~ "Boa altura",
+        Height <= 170 ~ "Baixinho",
+        TRUE ~ NA_character_
+      ),
+      BMI_Category = case_when(
+        BMI < 18.5 ~ "Abaixo do peso",
+        BMI >= 18.5 & BMI < 25 ~ "Normal",
+        BMI >= 25 & BMI < 30 ~ "Sobrepeso",
+        BMI >= 30 ~ "Obeso",
+        TRUE ~ NA_character_
+      )
+  )
+
+print(novo_df)
+freq(novo_df)
+# %%
+# ========================
+# 8 - Utilização do summarytools
+dfSummary(df_subset)
