@@ -60,9 +60,29 @@ cat("===== Criação dos cenários ======\n\n",
     paste("",capture.output(summary(X_U_delta_train)), collapse = "\n")
 )
 
-# 1 - Ajuste de dois modelos
-## Modelo simples - ignora o erro de mdeição
-## Modelo completo - usa X + variações que indicam o tipo da medição
+
+# 1 - Ajuste de três modelos
+## Modelo simples - ignora o erro de medição
+model_clean <- glm(Y_train ~ X_clean_train, family = binomial)
+
+## Modelo uniforme - usa o erro U
+model_unif <- glm(Y_train ~ X_U_train, family = binomial)
+
+## Modelo com erro sistemático - usa o erro U + delta
+model_sist <- glm(Y_train ~ X_U_delta_train, family = binomial)
+
+
+cat("====== Resultados dos modelos ==========\n\n",
+    "I - Modelo limpo\n\n",
+    paste("",capture.output(summary(model_clean)), collapse = "\n"),
+    "\n\n\n",
+    "II - Modelo com erro UNIFORME\n\n",
+    paste("",capture.output(summary(model_unif)), collapse = "\n"),
+    "\n\n\n",
+    "III - Modelo com erro UNIFORME e SISTEMÁTICO\n\n",
+    paste("",capture.output(summary(model_sist)), collapse = "\n")
+)
+
 
 # 2 - Avaliação em diferentes cenários
 ## Cenário limpo
