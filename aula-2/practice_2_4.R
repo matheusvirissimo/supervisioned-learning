@@ -1,72 +1,70 @@
 ## OBJETIVO
-# simular dados com erro de medição e comparar um modelo ingênuo vs um modelo que reconhece o erro, #nolint
-# para ver como isso afeta a qualidade das previsões
+# simular dados com erro de medição e comparar um modelo ingênuo vs um modelo
+# que reconhece o erro para ver como isso afeta a qualidade das previsões
 
 ## FUNÇÃO: P(Y = 1 | X*) = plogis(alpha + beta * X_train)
 
-## ------------------------- Importação das Bibliotecas ------------------------- ##
-
-library(ggplot2)
-library(patchwork)
-
-## --------------------------- Configurações Iniciais --------------------------- ##
+##  Configurações Iniciais --------------------------- ##
+# CONSTANTES - podem ser escolhidas aleatoriamente,
+# desde que sejam fixas
 
 set.seed(123)             # Semente
 
-n_train         <- 1000   # Tamanho do conjunto de treino
-n_test          <- 1000   # Tamanho do conjunto de teste
+n_train         <- 700   # Tamanho do conjunto de treino (70%)
+n_test          <- 300   # Tamanho do conjunto de teste (30%)
 
-alpha           <- -0.5   # Intercepto (modelo gerador)
+alpha           <-  -0.5   # Intercepto (modelo gerador)
 beta            <-  1.2   # Efeito do biomarcador (modelo gerador)
-sigma           <-  1.0   # Desvio-padrão do biomarcador
+sigma           <-  1.0   # Desvio-padrão do biomarcador (variância constante = 1) #nolint
+sigma_2         <-  sigma^2  # Variância
 
-delta           <-  0.7   # Erro sistemático de calibração no Lab B
+a               <- 0.5  # Parâmetro do erro uniforme (o erro varia entre uma faixa) #nolint
+delta           <-  1   # Erro sistemático (balança sempre pesa 1kg a mais)
 
-## ------------------------ Geração dos Dados Simulados ------------------------- ##
+##  Geração dos Dados Simulados ------------------------- ##
 
-## Biomarcador (X^ast)
+## X* (verdadeiro) #nolint
+X_clean_train    <- rnorm(n_train, mean = 0, sd = sigma)
+X_clean_test     <- rnorm(n_test,  mean = 0, sd = sigma)
 
-X_train_true    <- rnorm(n_train, mean = 0, sd = sigma)
-X_test_true     <- rnorm(n_test,  mean = 0, sd = sigma)
+## Erro U -> unif(-a, a) e diferentes (evitar correlação artificial)
+U1               <- runif(n_train, min = -a, max = a)
+U2               <- runif(n_train, min = -a, max = a)
+
+## X* + U -> X com erro uniforme
+X_U_train        <- X_clean_train + U1
+X_U_test         <- X_clean_train + U1
+
+## X* + U + delta -> erro sistemático
+X_U_delta_train  <- X_clean_train + U2 + delta
+X_U_delta_test   <- X_clean_test + U2 + delta
 
 ## Desfecho binário (modelo logístico)
 
-p_train         <- plogis(alpha + beta * X_train_true)
-p_test          <- plogis(alpha + beta * X_test_true)
+p_train         <- plogis(alpha + beta * X_clean_train)
+p_test          <- plogis(alpha + beta * X_clean_test)
 
 Y_train         <- rbinom(n_train, size = 1, prob = p_train)
 Y_test          <- rbinom(n_test,  size = 1, prob = p_test)
 
-## Definição do Laboratório (0 = Laboratório A, 1 = Laboratório B)
-
-lab_train       <- rbinom(n_train, size = 1, prob = 0.5)
-
-## Erro sistemático de calibração: deslocamento constante aplicado ao Lab B
-
-X_train_obs     <- X_train_true + ifelse(lab_train == 1, delta, 0)
 
 ## Resumo descritivo do biomarcador por laboratório (conjunto de treino)
-
-cat(" # --------------------------------------------------------- #\n",
-    "# Resumo Descritivo do Biomarcador (X) (Conjunto de Treino) #\n",
-    "# --------------------------------------------------------- #\n\n",
-  
-    "Laboratório A (lab_train = 0)\n\n",
-    "n = ", sum(lab_train == 0), "\n\n",
-    paste("",capture.output(summary(X_train_obs[lab_train == 0])), collapse = "\n"),
+cat("===== Criação dos cenários ======\n\n", 
+    "I - Cenário limpo\n\n",
+    paste("",capture.output(summary(X_clean_train)), collapse = "\n"),
     "\n\n\n",
-  
-    "Laboratório B (lab_train = 1)\n\n",
-    "n = ", sum(lab_train == 1), "\n\n",
-    paste("",capture.output(summary(X_train_obs[lab_train == 1])), collapse = "\n"),
-    "\n"
+    "II - Cenário com erro UNIFORME\n\n",
+    paste("",capture.output(summary(X_U_train)), collapse = "\n"),
+    "\n\n\n",
+    "III - Cenário com erro UNIFORME e SISTEMÁTICO\n\n",
+    paste("",capture.output(summary(X_U_delta_train)), collapse = "\n")
 )
 
 # 1 - Ajuste de dois modelos
 ## Modelo simples - ignora o erro de mdeição
 ## Modelo completo - usa X + variações que indicam o tipo da medição
 
-# 2 - Teste em cenários
+# 2 - Avaliação em diferentes cenários
 ## Cenário limpo
 ## Cenário com erro aleatório
 ## Cenário com erro sistemático persistente
