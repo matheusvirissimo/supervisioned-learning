@@ -12,8 +12,8 @@ summary(df_subset)
 
 # Aplicação de padronização
 ## z-score
-media <- mean(df_subset$age)
-desvio_padrao <- sd(df_subset$age)
+media <- mean(df_subset$age, na.rm = TRUE)
+desvio_padrao <- sd(df_subset$age, na.rm = TRUE)
 
 z_score <- function(valor){
     x <- (valor - media) / desvio_padrao
@@ -25,7 +25,7 @@ summary(teste_1)
 
 ## mediana e quartis
 mediana_quartil <- function(valor){
-    x <- (valor - median(valor))/IQR(valor)
+    x <- (valor - median(valor, na.rm = TRUE))/IQR(valor)
     return(x)
 }
 teste_2 <- mediana_quartil(df_subset$time)
